@@ -1,28 +1,39 @@
 # Derek
 # SE
 
-
 import random
 
 games = []
 
 
 def show_menu():
-    print("\n Video Game Tracker / Manager")
-    print("1. Add a game")
-    print("2. View my games")
-    print("3. Delete a game")
-    print("4. Pick a game for me")
+    # IH1
+    print("\n Video Game Tracker / Manager ")
+
+    # IH3
+    print("1. Add a game (add a title to your library)")
+    print("2. View my games (see saved titles)")
+    print("3. Delete a game (remove a title permanently)")
+    print("4. Pick a game for me (random suggestion)")
     print("5. Exit")
 
 
 def add_game():
-    game = input("Enter a game name: ")
-    if game != "":
-        games.append(game)
-        print(f'"{game}" has been added to your library.')
-    else:
+    # IH6
+    game = input("Enter the name of the game you want to add and press Enter: ")
+
+    if game.strip() == "":
+        # IH8
         print("You didn’t enter anything.")
+        return
+
+    if game in games:
+        # IH8
+        print("That game is already in your library.")
+        return
+
+    games.append(game)
+    print(f'"{game}" has been added to your library.')
 
 
 def view_games():
@@ -40,8 +51,19 @@ def delete_game():
         print("There are no games to delete.")
         return
 
+    # IH2
+    print("\nWARNING: Deleting a game is permanent and cannot be undone.")
+
     view_games()
-    choice = input("Enter the number of the game you want to delete: ")
+
+    # IH7
+    choice = input("Enter the number OR the name of the game you want to delete: ")
+
+    # reinforces IH2
+    confirm = input("Are you sure you want to permanently delete this game? (yes/no): ")
+    if confirm.lower() != "yes":
+        print("Deletion cancelled.")
+        return
 
     if choice.isdigit():
         choice = int(choice)
@@ -50,8 +72,11 @@ def delete_game():
             print(f'"{removed}" has been removed from your library.')
         else:
             print("That number doesn’t match any game.")
+    elif choice in games:
+        games.remove(choice)
+        print(f'"{choice}" has been removed from your library.')
     else:
-        print("Please enter a valid number.")
+        print("Invalid input. No game deleted.")
 
 
 def pick_random_game():
@@ -64,7 +89,14 @@ def pick_random_game():
 
 while True:
     show_menu()
-    choice = input("Choose an option (1-5): ")
+
+    # IH6
+    choice = input("Choose an option (1-5) and press Enter to continue: ")
+
+    # IH8
+    while choice not in ["1", "2", "3", "4", "5"]:
+        print("Invalid option. Please choose a number between 1 and 5.")
+        choice = input("Choose an option (1-5): ")
 
     if choice == "1":
         add_game()
@@ -77,7 +109,8 @@ while True:
     elif choice == "5":
         print("See you next time!")
         break
-    else:
-        print("That’s not a valid option.")
+
+        # Ih4 shown from familiar design
+        # Ih5 shown from ability to recover / continue
 
 
